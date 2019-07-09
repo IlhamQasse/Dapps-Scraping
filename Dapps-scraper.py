@@ -15,8 +15,7 @@ import pandas as pd
 project_Tocken = input("Please enter project Token: ")
 url = input("Please enter the start url: ")
 
-#project_Tocken="twxoLgsMeSCc"
-#url="https://www.stateofthedapps.com/rankings/platform/steem"
+#Prepare Project to run
 
 params = {
   "api_key": "t6F8DkOTJP-N", # you can change the api key and use your api provided by the parsehub
