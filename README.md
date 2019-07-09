@@ -1,5 +1,5 @@
 # Dapps-Scraping
-This Projects scrapes the Dapps websites and repositories such as the state of Dapps and Dappradar
+This Projects scrapes the Dapps websites and repositories such as the state of Dapps and Dappradar. This project also can be used to run other website scraper projects from parsehub. you only need to change the app key, to access your projects in parsehub . 
 
 
 ## Installation
