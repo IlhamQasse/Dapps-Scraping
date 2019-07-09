@@ -24,3 +24,5 @@ Please use these project tokens to scrape the following websites:
 | twxoLgsMeSCc  | State of the Dapps  |
 
 
+## Disclaimer
+Be aware that web scraping is considered bad practice. This can break without notice, as it is obviously relying on how the frontend is rendered. 
