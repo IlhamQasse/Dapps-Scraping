@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-To scrape the required websites we have used [parsehub] (https://www.parsehub.com).
+To scrape the required websites we have used [parsehub](https://www.parsehub.com).
 As input the user needs to input the Project-Token and the starting URL. 
 You can change the api-key if you want to use your own projcts in parsehub.
 
