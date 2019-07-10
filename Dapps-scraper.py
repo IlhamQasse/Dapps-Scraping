@@ -55,12 +55,18 @@ with open('file.txt', 'r') as in_file:
         writer = csv.writer(out_file)
         writer.writerows(lines)
 #Compare the extracted data with the previous Data (both in excel sheets)
-""" 
-fileCompare = input("Please enter the file you want to compare with: ")       
-df1 = pd.read_excel(fileName)
-df2 = pd.read_excel(fileCompare)
-C = pd.merge(left=df1,right=df2, how='outer', left_index=True, right_index=True, suffixes=['_df1', '_df2'])
-not_in_df1 = C.drop(df1.index)
-not_in_df2 = C.drop(df2.index)
-print(not_in_df2.name_name_df1)
-"""
+fileCompare = input("\n \033[1m Please enter the file you want to compare with: \033[0m ")       
+f2 = pd.read_csv(fileName,encoding = "ISO-8859-1")
+f1 = pd.read_csv(fileCompare,encoding = "ISO-8859-1")
+xf1=f2[~f2.Name.isin(f1.Name)]
+xf2=f1[~f1.Name.isin(f2.Name)]
+if xf1.Name.count() > 0:
+    print("\n \033[1m The new dapps added: "+str(xf1.Name.count())+" Dapps\033[0m \n")
+    print(xf1)
+else :
+     print("\n \033[1m There is no new Dapps\033[0m \n")
+if xf2.Name.count() > 0:
+    print("\n \033[1m The removed dapps: "+str(xf2.Name.count())+" Dapps \033[0m \n")
+    print(xf2)
+else :
+     print("\n \033[1m There is no removed Dapps\033[0m \n")
