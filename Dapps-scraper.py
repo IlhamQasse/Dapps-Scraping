@@ -55,18 +55,18 @@ with open('file.txt', 'r') as in_file:
         writer = csv.writer(out_file)
         writer.writerows(lines)
 #Compare the extracted data with the previous Data (both in excel sheets)
-fileCompare = input("\n \033[1m Please enter the file you want to compare with: \033[0m ")       
-f2 = pd.read_csv(fileName,encoding = "ISO-8859-1")
+fileCompare = input("\n \033[1m Please enter the file you want to compare with: \033[0m ") 
 f1 = pd.read_csv(fileCompare,encoding = "ISO-8859-1")
-xf1=f2[~f2.Name.isin(f1.Name)]
-xf2=f1[~f1.Name.isin(f2.Name)]
-if xf1.Name.count() > 0:
+f2 = pd.read_csv(fileName,encoding = "ISO-8859-1")
+xf1=f2[~f2.Name.isin(f1.Name)] # returns the new dapps to the list
+xf2=f1[~f1.Name.isin(f2.Name)] # returns the removed dapps from the list
+if xf1.Name.count() > 0: # check if there are any new dapps
     print("\n \033[1m The new dapps added: "+str(xf1.Name.count())+" Dapps\033[0m \n")
     print(xf1)
 else :
-     print("\n \033[1m There is no new Dapps\033[0m \n")
-if xf2.Name.count() > 0:
+     print("\n \033[1m There are no new Dapps\033[0m \n")
+if xf2.Name.count() > 0:  # check if there are any removed dapps
     print("\n \033[1m The removed dapps: "+str(xf2.Name.count())+" Dapps \033[0m \n")
     print(xf2)
 else :
-     print("\n \033[1m There is no removed Dapps\033[0m \n")
+     print("\n \033[1m There are no removed Dapps\033[0m \n")
