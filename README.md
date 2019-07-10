@@ -24,7 +24,7 @@ Please use these project tokens to scrape the following websites:
 | twxoLgsMeSCc  | State of the Dapps  |
 
 
-To track the dapps status, you can compare the extracted data with a previous extracted data. The comparison will return the details of new added dapss and removed dapps.
+To track the dapps status, you can compare the extracted data with a previous extracted data. The comparison will return the details of new added dapss and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not intrested to track the changes in the data.
 
 ## Disclaimer
 Be aware that web scraping is considered bad practice. This can break without notice, as it is obviously relying on how the frontend is rendered. This was created for research and education purposes. 
