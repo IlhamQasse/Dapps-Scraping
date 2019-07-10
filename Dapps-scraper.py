@@ -70,3 +70,15 @@ if xf2.Name.count() > 0:  # check if there are any removed dapps
     print(xf2)
 else :
      print("\n \033[1m There are no removed Dapps\033[0m \n")
+
+'''
+# Plot the data based on the date
+# Note that DappRader doesnt have Date feature, so you can't plot the extracted data based on time (Month)
+import matplotlib.pyplot as plt
+fileName='Steemx.csv'
+df = pd.read_csv(fileName)
+df['date'] = pd.to_datetime(df.name_Date)
+df['count']=1
+agg = df.resample('M', on='date').sum()
+agg.plot( y='count',title='New Dapps (monthly totals)', figsize=(16, 9))
+'''
