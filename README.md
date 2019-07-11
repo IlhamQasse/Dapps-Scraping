@@ -26,7 +26,7 @@ Please use these project tokens to scrape the following websites:
 
 To track the dapps status, you can compare the extracted data with a previous extracted data. The comparison will return the details of new added dapss and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not intrested to track the changes in the data.
 
-to run the program, use the following command
+to run the program, use the following command:
 ```bash
 python Dapps-scraper.py
 ```
