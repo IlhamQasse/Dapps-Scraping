@@ -1,5 +1,5 @@
 # Dapps-Scraping
-This Projects scrapes the Dapps websites and repositories such as the state of Dapps and Dappradar. Moreover, this project also can be used to run other website scraper projects from parsehub. you only need to change the app key, to access your projects in parsehub . 
+This project scrapes the Dapps websites and repositories such as the state of Dapps and Dappradar. Moreover, it also can be used to run other website scraper projects from parsehub. You only need to change the app-key to access your projects in parsehub. 
 
 
 ## Installation
@@ -24,11 +24,11 @@ Please use these project tokens to scrape the following websites:
 | twxoLgsMeSCc  | State of the Dapps  |
 
 
-To track the dapps status, you can compare the extracted data with a previous extracted data. The comparison will return the details of new added dapss and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not intrested to track the changes in the data.
+To track the dapps status, you can compare the extracted data with previous extracted data. The comparison will return the details of newly added dapps and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not interested in tracking the changes in the data.
 
 to run the program, use the following command:
 ```bash
 python Dapps-scraper.py
 ```
 ## Disclaimer
-Be aware that web scraping is considered bad practice. This can break without notice, as it is obviously relying on how the frontend is rendered. This was created for research and education purposes. 
+Be aware that web scraping is considered a bad practice. Please be advised that this was created for research and education purposes only.  
