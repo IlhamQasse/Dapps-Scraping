@@ -1,5 +1,5 @@
-# Dapps-Scraping
-This project scrapes the Dapps websites and repositories such as the state of Dapps and Dappradar. Moreover, it also can be used to run other website scraper projects from parsehub. You only need to change the app-key to access your projects in parsehub. 
+# DApps-Scraping
+This project scrapes the DApps websites and repositories such as the state of DApps and Dappradar. Moreover, it also can be used to run other website scraper projects from parsehub. You only need to change the app-key to access your projects in parsehub. 
 
 
 ## Installation
@@ -21,7 +21,7 @@ Please use these project tokens to scrape the following websites:
 | Project Token  | Website |
 | ------------- | ------------- |
 | tMh9JaUxNhyO  | DappRadar  |
-| twxoLgsMeSCc  | State of the Dapps  |
+| twxoLgsMeSCc  | State of the DApps  |
 
 
 To track the dapps status, you can compare the extracted data with previous extracted data. The comparison will return the details of newly added dapps and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not interested in tracking the changes in the data.
