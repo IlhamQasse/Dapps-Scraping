@@ -33,14 +33,16 @@ print(token)
 
 #Get the results of the running Project
 #It takes sometime to fetch the results, thats why there sleep request
-
-time.sleep(30) #The waiting time can be increased, it takes 40 minutes to scrape 200 pages
 params = {
   "api_key": "t6F8DkOTJP-N",
   "format": "csv" #The format can be changed to JSON, change also the fileName veriable to JSON
 }
 #get the results
 r = requests.get('https://www.parsehub.com/api/v2/runs/'+token+'/data', params=params)
+while r.status_code == 404: #While the data is not ready
+    print('Please wait the data still not ready')
+    time.sleep(30) #The waiting time can be increased, it takes 40 minutes to scrape 200 pages
+    r = requests.get('https://www.parsehub.com/api/v2/runs/'+token+'/data', params=params)
 print(r.text)
 f = open('file.txt', 'w')
 f.write(r.text)
