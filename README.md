@@ -23,6 +23,8 @@ Please use these project tokens to scrape the following websites:
 | tMh9JaUxNhyO  | DappRadar  |
 | t10UDy7RkHR0  | State of the DApps  |
 
+**Please note that you need to provide the link of the ranking page for each platform.**
+
 
 To track the dapps status, you can compare the extracted data with previous extracted data. The comparison will return the details of newly added dapps and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not interested in tracking the changes in the data.
 
