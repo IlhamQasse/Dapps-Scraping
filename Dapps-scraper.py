@@ -48,7 +48,7 @@ f = open('file.txt', 'w')
 f.write(r.text)
 f.close ()
 #Save the extracted data to a CSV file 
-fileName = input("Please enter the file name: ")
+fileName = input("Please enter the file name: ex. (Iost) ")
 fileName=fileName+'.csv'
 with open('file.txt', 'r') as in_file:
     stripped = (line.strip() for line in in_file)
@@ -58,7 +58,7 @@ with open('file.txt', 'r') as in_file:
         writer.writerows(lines)
 
 #Compare the extracted data with the previous Data (both in excel sheets)
-fileCompare = input("\n \033[1m Please enter the file you want to compare with: \033[0m ") 
+fileCompare = input("\n \033[1m Please enter the file you want to compare with: ex. (Iost.csv) \033[0m ") 
 f1 = pd.read_csv(fileCompare,encoding = "ISO-8859-1")
 f2 = pd.read_csv(fileName,encoding = "ISO-8859-1")
 f2.columns.values[0]='name'
