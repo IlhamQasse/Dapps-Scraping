@@ -59,8 +59,8 @@ with open('file.txt', 'r') as in_file:
 
 #Compare the extracted data with the previous Data (both in excel sheets)
 fileCompare = input("\n \033[1m Please enter the file you want to compare with: ex. (Iost.csv) \033[0m ") 
-f1 = pd.read_csv(fileCompare,encoding = "ISO-8859-1")
-f2 = pd.read_csv(fileName,encoding = "ISO-8859-1")
+f1 = pd.read_csv(fileCompare,encoding = "ISO-8859-1",error_bad_lines=False)
+f2 = pd.read_csv(fileName,encoding = "ISO-8859-1",error_bad_lines=False)
 f2.columns.values[0]='name'
 f1.columns.values[0]='name'
 
