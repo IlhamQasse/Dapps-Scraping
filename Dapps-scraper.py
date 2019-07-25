@@ -9,10 +9,12 @@ import time
 import requests
 import csv
 import pandas as pd
+import sys
 
-# Input request from the user to enter the project token and the starting URL
-project_Tocken = input("Please enter project Token: ")
-url = input("Please enter the start url: ")
+
+#get the input from the command line
+project_Tocken = sys.argv[1] 
+url = sys.argv[2] 
 
 #Prepare Project to run
 
@@ -48,8 +50,7 @@ f = open('file.txt', 'w')
 f.write(r.text)
 f.close ()
 #Save the extracted data to a CSV file 
-fileName = input("Please enter the file name: ex. (Iost) ")
-fileName=fileName+'.csv'
+fileName=sys.argv[3] #get the file name
 with open('file.txt', 'r') as in_file:
     stripped = (line.strip() for line in in_file)
     lines = (line.split(",") for line in stripped if line)
