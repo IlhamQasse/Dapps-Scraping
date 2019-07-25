@@ -18,10 +18,12 @@ You can change the api-key if you want to use your own projcts in parsehub.
 
 Please use these project tokens to scrape the following websites:
 
-| Project Token  | Website |
-| ------------- | ------------- |
-| tMh9JaUxNhyO  | DappRadar  |
-| t10UDy7RkHR0  | State of the DApps  |
+| Project Token  | Website | Link Example |
+| :---:   |  :---:  |  :---:   |
+| tMh9JaUxNhyO  | DappRadar  | https://dappradar.com/rankings/protocol/iost |
+| t10UDy7RkHR0  | State of the DApps  | https://www.stateofthedapps.com/rankings/platform/loom |
+
+
 
 **Please note that you need to provide the link of the ranking page for each platform.**
 
