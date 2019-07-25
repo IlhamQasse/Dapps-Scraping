@@ -30,9 +30,14 @@ Please use these project tokens to scrape the following websites:
 
 To track the dapps status, you can compare the extracted data with previous extracted data. The comparison will return the details of newly added dapps and removed dapps. This is an automatic process that will ask for the file to compare with after extracting the new data. You can skip it if you are not interested in tracking the changes in the data.
 
-to run the program, use the following command:
+to run the program, the following parameters are required: project token, url, and the file name to save the extracted data in
+The command to run the program is:
 ```bash
-python Dapps-scraper.py
+python Dapps-scraper.py project-token url filename
+```
+for example
+```bash
+python Dapps-scraper.py tMh9JaUxNhyO  https://dappradar.com/rankings/protocol/iost iost.csv
 ```
 ## Disclaimer
 Be aware that web scraping is considered a bad practice. Please be advised that this was created for research and education purposes only.  
