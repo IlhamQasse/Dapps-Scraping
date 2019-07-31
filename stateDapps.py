@@ -18,13 +18,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
 
-
-#Start chrome driver and load the page
-driver = webdriver.Chrome('/Users/elyhabaro/Downloads/Dapps-Scraping-master-2/chromedriver')
-driver.get('https://www.stateofthedapps.com/rankings')
-actions = ActionChains(driver)
-eachdapp= pd.DataFrame(columns=['github', 'status', 'Date', 'license'])
-currenturl=driver.current_url
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
     try:
@@ -32,6 +25,13 @@ def is_element_present(driver, what):
     except NoSuchElementException as e:
         return False
     return True
+
+#Start chrome driver and load the page
+driver = webdriver.Chrome('/Users/elyhabaro/Downloads/Dapps-Scraping-master-2/chromedriver') #please change the path of the chrome driver
+driver.get('https://www.stateofthedapps.com/rankings')
+actions = ActionChains(driver)
+eachdapp= pd.DataFrame(columns=['github', 'status', 'Date', 'license'])
+currenturl=driver.current_url
 #Access the source page of the loaded page and extrct the required data based on the xpath
 tree = html.fromstring(driver.page_source)
 pnumber=tree.xpath('//button[@class="button number last"]/span/text()')
