@@ -27,7 +27,7 @@ def is_element_present(driver, what):
         return False
     return True
 #Start chrome driver and load the page
-driver = webdriver.Chrome('/Users/elyhabaro/Downloads/Dapps-Scraping-master-2/chromedriver')
+driver = webdriver.Chrome('/Users/elyhabaro/Downloads/Dapps-Scraping-master-2/chromedriver') #please change the path of the chromedriver
 driver.get('https://dappradar.com/rankings')
 actions = ActionChains(driver)
 #Access the source page of the loaded page and extrct the required data based on the xpath
