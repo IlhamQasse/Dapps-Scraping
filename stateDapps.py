@@ -174,6 +174,8 @@ fig7.tight_layout()
 fig7.savefig(filename+'/dappsVolume.png',dpi=1000)
 plt.close(fig7)
 
+#Save the dataframe in excel file
+result.to_excel(filename+'/StateDapps.xlsx', index=False)
 result['date'] = pd.to_datetime(result.Date)
 
 #Platform EOS
