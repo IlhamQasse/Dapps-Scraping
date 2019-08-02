@@ -196,7 +196,8 @@ fig9.tight_layout()
 fig9.savefig(filename+'/smartcontracts.png',dpi=1000)
 plt.close(fig9)
 
-#print(filename)
+#save the dataframe to excel file
+result.to_excel(filename+'/DappRadar.xlsx', index=False)
 
 
 
