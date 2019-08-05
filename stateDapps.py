@@ -17,6 +17,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
+import datetime 
+import os
 
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
@@ -27,7 +29,9 @@ def is_element_present(driver, what):
     return True
 
 #Start chrome driver and load the page
-driver = webdriver.Chrome('/Users/elyhabaro/Downloads/Dapps-Scraping-master-2/chromedriver') #please change the path of the chrome driver
+driverPath=os.path.dirname(os.path.abspath(__file__))
+#please make sure that you have installed the driver and its in the same file as the python code, otherwise change the specified path
+driver = webdriver.Chrome(driverPath+'/chromedriver')
 driver.get('https://www.stateofthedapps.com/rankings')
 actions = ActionChains(driver)
 eachdapp= pd.DataFrame(columns=['github', 'status', 'Date', 'license'])
