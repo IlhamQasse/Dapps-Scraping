@@ -19,14 +19,16 @@ For Linux and Mac OS users, run the following script to download the chrome driv
 ```bash
 ./download.sh 
 ```
+#### Please make sure that the version of you chrome is 76, otherwise update your chrome or install the chrome driver for your version.
+
 For Mac users, please make sure you have wget installed in your system, use the following command to install it:
 
 ```bash
 brew install wget 
 ```
 
-Once the driver is downloaded, please add the path of the chrome driver to both scripts (DappRadar.py, stateDapps.py).
-The path of the chrome driver is specified in the line (30) in both scripts, it should be changed to your own driver path.
+Once the driver is downloaded, please check the path of the chrome driver to both scripts (DappRadar.py, stateDapps.py).
+if you have downloaded the chrome driver manually, please change the path specified in the codes to your own path. You don't have to change the path if you have used the script to download your driver.
 
 
 ## Usage
