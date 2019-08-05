@@ -14,6 +14,17 @@ The used python package Selenium requires a chrome driver to be downloaded. Plea
 
 (https://chromedriver.chromium.org/downloads)
 
+For Linux and Mac OS users, run the following script to download the chrome driver:
+
+```bash
+./download.sh 
+```
+For Mac users, please make sure you have wget installed in your system, use the following command to install it:
+
+```bash
+brew install wget 
+```
+
 Once the driver is downloaded, please add the path of the chrome driver to both scripts (DappRadar.py, stateDapps.py).
 The path of the chrome driver is specified in the line (30) in both scripts, it should be changed to your own driver path.
 
