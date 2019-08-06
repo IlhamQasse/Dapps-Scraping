@@ -18,7 +18,7 @@ from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
 import datetime 
 import os
-
+from datetime import date, timedelta
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
     try:
@@ -201,7 +201,26 @@ plt.close(fig9)
 #save the dataframe to excel file
 result.to_excel(filename+'/DappRadar.xlsx', index=False)
 
+#compare the file with the previous file
+today = date.today()
+yesterday = today - timedelta(days=1)
+yesterday=yesterday.strftime('%Y-%m-%d')
+filepathY='dappRadar-'+yesterday
+f2=pd.read_csv(filepathY+'/DappRadar.csv')
+f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github', 'smartContract']
 
+xf1=f2[~f2.Name.isin(result.Name)]
+xf2=result[~result.Name.isin(f2.Name)]
+if xf1.Name.count() > 0:
+    print("\n \033[1m The new dapps added: "+str(xf1.Name.count())+" DApps\033[0m \n")
+    print(xf1)
+else :
+     print("\n \033[1m There is no new DApps\033[0m \n")
+if xf2.Name.count() > 0:
+    print("\n \033[1m The removed dapps: "+str(xf2.Name.count())+" DApps \033[0m \n")
+    print(xf2)
+else :
+     print("\n \033[1m There is no removed DApps\033[0m \n")
 
 
 
