@@ -19,6 +19,7 @@ from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
 import datetime 
 import os
+from datetime import date, timedelta
 
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
@@ -221,3 +222,24 @@ fig8.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.legend()
 fig8.savefig(filename+'/newDapps.png',dpi=1000)
 plt.close(fig8)
+
+#compare the file with a previous file (from the day before)
+today = date.today()
+yesterday = today - timedelta(days=1)
+yesterday=yesterday.strftime('%Y-%m-%d')
+filepathY='stateofthedapp-'+yesterday
+f2=pd.read_csv(filepathY+'/StateDapps.csv')
+f2.columns=['dappNAme', 'category', 'users', 'Platform', 'Devact', 'Volume7d','github', 'status', 'Date', 'license']
+
+xf1=f2[~f2.dappNAme.isin(result.dappNAme)]
+xf2=result[~result.dappNAme.isin(f2.dappNAme)]
+if xf1.dappNAme.count() > 0:
+    print("\n \033[1m The new dapps added: "+str(xf1.dappNAme.count())+" DApps\033[0m \n")
+    print(xf1)
+else :
+     print("\n \033[1m There is no new DApps\033[0m \n")
+if xf2.dappNAme.count() > 0:
+    print("\n \033[1m The removed dapps: "+str(xf2.dappNAme.count())+" DApps \033[0m \n")
+    print(xf2)
+else :
+     print("\n \033[1m There is no removed DApps\033[0m \n")
