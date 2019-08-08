@@ -18,7 +18,9 @@ from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
 import datetime 
 import os
+import os.path
 from datetime import date, timedelta
+import sys
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
     try:
@@ -35,8 +37,14 @@ actions = ActionChains(driver)
 #Access the source page of the loaded page and extrct the required data based on the xpath
 tree = html.fromstring(driver.page_source)
 currenturl=driver.current_url
-pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
-pagen=int(pnumber[0])
+if len(sys.argv) < 2:
+    print("No Arguments :)")
+    pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
+    pagen=int(pnumber[0])
+else:
+    pagen=int(sys.argv[1])-1
+    if pagen < 0:
+        pagen=0
 links = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
 Name=['r']
 Volume24=['r']
@@ -206,21 +214,25 @@ today = date.today()
 yesterday = today - timedelta(days=1)
 yesterday=yesterday.strftime('%Y-%m-%d')
 filepathY='dappRadar-'+yesterday
-f2=pd.read_csv(filepathY+'/DappRadar.csv')
-f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github', 'smartContract']
+if os.path.exists(filepathY): 
+    f2=pd.read_csv(filepathY+'/DappRadar.csv')
+    f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github', 'smartContract']
 
-xf1=f2[~f2.Name.isin(result.Name)]
-xf2=result[~result.Name.isin(f2.Name)]
-if xf1.Name.count() > 0:
-    print("\n \033[1m The new dapps added: "+str(xf1.Name.count())+" DApps\033[0m \n")
-    print(xf1)
+    xf1=f2[~f2.Name.isin(result.Name)]
+    xf2=result[~result.Name.isin(f2.Name)]
+    if xf1.Name.count() > 0:
+        print("\n \033[1m The new dapps added: "+str(xf1.Name.count())+" DApps\033[0m \n")
+        print(xf1)
+    else :
+        print("\n \033[1m There is no new DApps\033[0m \n")
+    if xf2.Name.count() > 0:
+        print("\n \033[1m The removed dapps: "+str(xf2.Name.count())+" DApps \033[0m \n")
+        print(xf2)
+    else :
+        print("\n \033[1m There is no removed DApps\033[0m \n")
 else :
-     print("\n \033[1m There is no new DApps\033[0m \n")
-if xf2.Name.count() > 0:
-    print("\n \033[1m The removed dapps: "+str(xf2.Name.count())+" DApps \033[0m \n")
-    print(xf2)
-else :
-     print("\n \033[1m There is no removed DApps\033[0m \n")
+    print("There is no file to compare with")
+
 
 
 
