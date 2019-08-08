@@ -41,11 +41,20 @@ We have created two scripts:
 ```bash
 python DappRadar.py
 ```
+For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+
+```bash
+python DappRadar.py 3 
+```
 
 2. The second script scrapes the State of the Dapps website. The command to run the script is:
 
 ```bash
 python stateDapps.py
+```
+For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+```bash
+python stateDapps.py 3
 ```
 
 The scraping time depends on the number of the pages, and it may take 1 to 2 hours to fully run the script.
