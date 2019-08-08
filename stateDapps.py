@@ -19,7 +19,9 @@ from selenium.common.exceptions import NoSuchElementException
 import matplotlib.pyplot as plt
 import datetime 
 import os
+import os.path
 from datetime import date, timedelta
+import sys
 
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
@@ -39,8 +41,14 @@ eachdapp= pd.DataFrame(columns=['github', 'status', 'Date', 'license'])
 currenturl=driver.current_url
 #Access the source page of the loaded page and extrct the required data based on the xpath
 tree = html.fromstring(driver.page_source)
-pnumber=tree.xpath('//button[@class="button number last"]/span/text()')
-pagen=int(pnumber[0])
+if len(sys.argv) < 2:
+    print("No Arguments :)")
+    pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
+    pagen=int(pnumber[0])
+else:
+    pagen=int(sys.argv[1])-1
+    if pagen < 0:
+        pagen=0
 dappNAme = tree.xpath('.//h4[@class="name"]/a/text()')
 category = tree.xpath('.//div[@class="RankingTableCategory"]/a/text()')
 users = tree.xpath('.//div[@class="table-data col-dau"]/div[1]/span[1]/text()')
@@ -228,18 +236,20 @@ today = date.today()
 yesterday = today - timedelta(days=1)
 yesterday=yesterday.strftime('%Y-%m-%d')
 filepathY='stateofthedapp-'+yesterday
-f2=pd.read_csv(filepathY+'/StateDapps.csv')
-f2.columns=['dappNAme', 'category', 'users', 'Platform', 'Devact', 'Volume7d','github', 'status', 'Date', 'license']
-
-xf1=f2[~f2.dappNAme.isin(result.dappNAme)]
-xf2=result[~result.dappNAme.isin(f2.dappNAme)]
-if xf1.dappNAme.count() > 0:
-    print("\n \033[1m The new dapps added: "+str(xf1.dappNAme.count())+" DApps\033[0m \n")
-    print(xf1)
+if os.path.exists(filepathY): 
+    f2=pd.read_csv(filepathY+'/StateDapps.csv')
+    f2.columns=['dappNAme', 'category', 'users', 'Platform', 'Devact', 'Volume7d','github', 'status', 'Date', 'license']
+    xf1=f2[~f2.dappNAme.isin(result.dappNAme)]
+    xf2=result[~result.dappNAme.isin(f2.dappNAme)]
+    if xf1.dappNAme.count() > 0:
+        print("\n \033[1m The new dapps added: "+str(xf1.dappNAme.count())+" DApps\033[0m \n")
+        print(xf1)
+    else :
+        print("\n \033[1m There is no new DApps\033[0m \n")
+    if xf2.dappNAme.count() > 0:
+        print("\n \033[1m The removed dapps: "+str(xf2.dappNAme.count())+" DApps \033[0m \n")
+        print(xf2)
+    else :
+        print("\n \033[1m There is no removed DApps\033[0m \n")
 else :
-     print("\n \033[1m There is no new DApps\033[0m \n")
-if xf2.dappNAme.count() > 0:
-    print("\n \033[1m The removed dapps: "+str(xf2.dappNAme.count())+" DApps \033[0m \n")
-    print(xf2)
-else :
-     print("\n \033[1m There is no removed DApps\033[0m \n")
+    print("There is no file to compare with")     
