@@ -43,7 +43,7 @@ currenturl=driver.current_url
 tree = html.fromstring(driver.page_source)
 if len(sys.argv) < 2:
     print("No Arguments :)")
-    pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
+    pnumber=tree.xpath('//button[@class="button number last"]/span/text()')
     pagen=int(pnumber[0])
 else:
     pagen=int(sys.argv[1])-1
