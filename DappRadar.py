@@ -42,7 +42,7 @@ if len(sys.argv) < 2:
     pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
     pagen=int(pnumber[0])
 else:
-    pagen=int(sys.argv[1])-1
+    pagen=int(sys.argv[1])
     if pagen < 0:
         pagen=0
 links = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
