@@ -69,11 +69,13 @@ for x in range(pagen-1):
   element_present = EC.presence_of_element_located((By.XPATH, '//a[@class="pagination-next"]'))
   WebDriverWait(driver, 5).until(element_present)
   tree = html.fromstring(driver.page_source)
-  Name=tree.xpath('.//div[@class="table-dapp-name"]/text()')
+  Name=['r']
+  Volume24=['r']
+  Name.extend(tree.xpath('.//div[@class="table-dapp-name"]/text()'))
   Category= tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
   Balance= tree.xpath('.//div[@data-heading="Balance"]/div/span[2]/text()')
   User= tree.xpath('.//div[@data-heading="Users 24h"]/span/text()')
-  Volume24=tree.xpath('.//div[@data-heading="Volume 24h"]/div/div/div[1]/text()')
+  Volume24.extend(tree.xpath('.//div[@data-heading="Volume 24h"]/div/div/div[1]/text()'))
   Volume7d= tree.xpath('.//div[@data-heading="Volume 7d"]/div/div[1]/text()')
   Txn24= tree.xpath('.//div[@data-heading="Txs 24h"]/div/span/text()')
   Txn7d= tree.xpath('.//div[@data-heading="Txs 7d"]/div/span/text()')
