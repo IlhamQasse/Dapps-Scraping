@@ -34,7 +34,7 @@ if you have downloaded the chrome driver manually, please change the path specif
 ## Usage
 
 To scrape the required websites we have used the package Selenium.
-We have created two scripts:
+We have created three scripts:
 
 1. the first script is to crawl the DappRadar webpage. To run the script use the following comand:
 
@@ -57,6 +57,15 @@ For testing purposes you can specify the number of pages you want to scrape. the
 python stateDapps.py 3
 ```
 
+2. The third script scrapes the dapp.com website. The command to run the script is:
+
+```bash
+python dappcom.py
+```
+For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+```bash
+python dappcom.py 3
+```
 The scraping time depends on the number of the pages, and it may take 1 to 2 hours to fully run the script.
 Once the extraction are done, the scripts will generate plots from the extracted data and automatically save them in a folder with the website name and date of the run.
 
