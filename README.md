@@ -57,7 +57,7 @@ For testing purposes you can specify the number of pages you want to scrape. the
 python stateDapps.py 3
 ```
 
-2. The third script scrapes the dapp.com website. The command to run the script is:
+3. The third script scrapes the dapp.com website. The command to run the script is:
 
 ```bash
 python dappcom.py
