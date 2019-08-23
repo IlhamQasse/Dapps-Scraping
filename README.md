@@ -41,7 +41,7 @@ We have created three scripts:
 ```bash
 python DappRadar.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
 
 ```bash
 python DappRadar.py 3 
@@ -52,7 +52,7 @@ python DappRadar.py 3
 ```bash
 python stateDapps.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
 ```bash
 python stateDapps.py 3
 ```
@@ -62,7 +62,7 @@ python stateDapps.py 3
 ```bash
 python dappcom.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. the command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
 ```bash
 python dappcom.py 3
 ```
