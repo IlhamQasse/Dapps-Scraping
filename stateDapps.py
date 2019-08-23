@@ -37,7 +37,7 @@ driverPath=os.path.dirname(os.path.abspath(__file__))
 driver = webdriver.Chrome(driverPath+'/chromedriver')
 driver.get('https://www.stateofthedapps.com/rankings')
 actions = ActionChains(driver)
-eachdapp= pd.DataFrame(columns=['github', 'status', 'Date', 'license'])
+eachdapp= pd.DataFrame(columns=['dappLink','Txn24','Txn7d','github', 'chat','facebook','blog','twitter','reddit','status', 'Date', 'license'])
 currenturl=driver.current_url
 #Access the source page of the loaded page and extrct the required data based on the xpath
 tree = html.fromstring(driver.page_source)
@@ -67,10 +67,38 @@ for link in links:
        Github=Github[0]
     else:
         Github = 'null'
+    if is_element_present(driver, '//a[@title="Reddit"]'):
+       Reddit = tree.xpath('//a[@title="Reddit"]/@href')
+       Reddit=Reddit[0]
+    else:
+        Reddit = 'null'
+    if is_element_present(driver, '//a[@title="Twitter"]'):
+       Twitter = tree.xpath('//a[@title="Twitter"]/@href')
+       Twitter=Twitter[0]
+    else:
+        Twitter = 'null'        
+    if is_element_present(driver, '//a[@title="Blog"]'):
+       Blog = tree.xpath('//a[@title="Blog"]/@href')
+       Blog=Blog[0]
+    else:
+        Blog = 'null'     
+    if is_element_present(driver, '//a[@title="Facebook"]'):
+       Facebook = tree.xpath('//a[@title="Facebook"]/@href')
+       Facebook=Facebook[0]
+    else:
+        Facebook = 'null'    
+    if is_element_present(driver, '//a[@title="Chat"]'):
+       Chat = tree.xpath('//a[@title="Chat"]/@href')
+       Chat=Chat[0]
+    else:
+        Chat = 'null' 
+    dappLink=tree.xpath('//div[@class="DappDetailBodyContentCtas"]/div/div[2]/a/@href')
+    Txn24=tree.xpath('//div[@class="module-wrapper -tier-4"]/div[2]/div/ul/li[1]/span[2]/text()')
+    Txn7d=tree.xpath('//div[@class="module-wrapper -tier-4"]/div[2]/div/ul/li[2]/span[2]/text()')
     status=tree.xpath('//div[@class="DappDetailBodyContentModulesStatus"]/strong/text()')
     Date=tree.xpath('//div[@class="DappDetailBodyContentModulesSubmitted"]/strong/text()')
     Slicense=tree.xpath('//p[@class="license-data"]/text()')
-    eachdapp = eachdapp.append(pd.DataFrame([[Github,status[0],Date[0],Slicense[0]]], columns=eachdapp.columns))
+    eachdapp = eachdapp.append(pd.DataFrame([[dappLink[0],Txn24[0],Txn7d[0],Github,Chat,Facebook,Blog,Twitter,Reddit,status[0],Date[0],Slicense[0]]], columns=eachdapp.columns))
 #Go back to the previous ranking page
 driver.get(currenturl)
 
@@ -92,15 +120,42 @@ for x in range(pagen-1):
     driver.get(link)
     tree = html.fromstring(driver.page_source)
     if is_element_present(driver, '//a[@title="Github"]'):
-    #driver.find_element_by_xpath('//a[@title="Github"]'):
        Github = tree.xpath('//a[@title="Github"]/@href')
        Github=Github[0]
     else:
         Github = 'null'
+    if is_element_present(driver, '//a[@title="Reddit"]'):
+       Reddit = tree.xpath('//a[@title="Reddit"]/@href')
+       Reddit=Reddit[0]
+    else:
+        Reddit = 'null'
+    if is_element_present(driver, '//a[@title="Twitter"]'):
+       Twitter = tree.xpath('//a[@title="Twitter"]/@href')
+       Twitter=Twitter[0]
+    else:
+        Twitter = 'null'        
+    if is_element_present(driver, '//a[@title="Blog"]'):
+       Blog = tree.xpath('//a[@title="Blog"]/@href')
+       Blog=Blog[0]
+    else:
+        Blog = 'null'     
+    if is_element_present(driver, '//a[@title="Facebook"]'):
+       Facebook = tree.xpath('//a[@title="Facebook"]/@href')
+       Facebook=Facebook[0]
+    else:
+        Facebook = 'null'    
+    if is_element_present(driver, '//a[@title="Chat"]'):
+       Chat = tree.xpath('//a[@title="Chat"]/@href')
+       Chat=Chat[0]
+    else:
+        Chat = 'null'
+    dappLink=tree.xpath('//div[@class="DappDetailBodyContentCtas"]/div/div[2]/a/@href')           
+    Txn24=tree.xpath('//div[@class="module-wrapper -tier-4"]/div[2]/div/ul/li[1]/span[2]/text()')
+    Txn7d=tree.xpath('//div[@class="module-wrapper -tier-4"]/div[2]/div/ul/li[2]/span[2]/text()')
     status=tree.xpath('//div[@class="DappDetailBodyContentModulesStatus"]/strong/text()')
     Date=tree.xpath('//div[@class="DappDetailBodyContentModulesSubmitted"]/strong/text()')
     Slicense=tree.xpath('//p[@class="license-data"]/text()')
-    eachdapp = eachdapp.append(pd.DataFrame([[Github,status[0],Date[0],Slicense[0]]], columns=eachdapp.columns))
+    eachdapp = eachdapp.append(pd.DataFrame([[dappLink[0],Txn24[0],Txn7d[0],Github,Chat,Facebook,Blog,Twitter,Reddit,status[0],Date[0],Slicense[0]]], columns=eachdapp.columns))
   driver.get(currenturl)
   df = df.append(pd.DataFrame(list(zip(dappNAme,category,users,Platform,Devact,Volume7d)), columns=df.columns))
 
