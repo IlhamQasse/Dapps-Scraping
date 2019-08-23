@@ -87,17 +87,41 @@ for x in range(pagen-1):
   links.extend(dapplinks)
   df = df.append(pd.DataFrame(list(zip(Name,Category,Balance,User,Volume24,Volume7d,Txn24,Txn7d,platform)), columns=df.columns))
 
-eachdapp= pd.DataFrame(columns=['github', 'smartContract'])
+eachdapp= pd.DataFrame(columns=['github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract'])
 for link in links:
     driver.get(link)
     tree = html.fromstring(driver.page_source)
     if is_element_present(driver, '//div[@data-original-title="GitHub"]'):
-    #driver.find_element_by_xpath('//a[@title="Github"]'):
        Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')
     else:
         Github = 'null'
+    if is_element_present(driver, '//div[@data-original-title="facebook"]'):
+       facebook = tree.xpath('//div[@data-original-title="facebook"]/a/@href')
+    else:
+        facebook = 'null'
+    if is_element_present(driver, '//div[@data-original-title="twitter"]'):
+       twitter = tree.xpath('//div[@data-original-title="twitter"]/a/@href')
+    else:
+        twitter = 'null'   
+    if is_element_present(driver, '//div[@data-original-title="telegram"]'):
+       telegram = tree.xpath('//div[@data-original-title="telegram"]/a/@href')
+    else:
+        telegram = 'null'  
+    if is_element_present(driver, '//div[@data-original-title="medium"]'):
+       medium = tree.xpath('//div[@data-original-title="medium"]/a/@href')
+    else:
+        medium = 'null'   
+    if is_element_present(driver, '//div[@data-original-title="reddit"]'):
+       reddit = tree.xpath('//div[@data-original-title="reddit"]/a/@href')
+    else:
+        reddit = 'null'  
+    if is_element_present(driver, '//div[@data-original-title="youtube"]'):
+       youtube = tree.xpath('//div[@data-original-title="youtube"]/a/@href')
+    else:
+        youtube = 'null' 
+    dappLink=tree.xpath('//div[@class="dapp-links"]/a/@href')      
     smartContract=tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')
-    eachdapp = eachdapp.append(pd.DataFrame([[Github,smartContract]], columns=eachdapp.columns))
+    eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
 df=df.drop(df.index[0])
 df.reset_index(inplace=True, drop=True)
 eachdapp.reset_index(inplace=True, drop=True)
@@ -234,8 +258,3 @@ if os.path.exists(filepathY):
         print("\n \033[1m There is no removed DApps\033[0m \n")
 else :
     print("There is no file to compare with")
-
-
-
-
-
