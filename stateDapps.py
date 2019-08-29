@@ -293,7 +293,7 @@ yesterday=yesterday.strftime('%Y-%m-%d')
 filepathY='stateofthedapp-'+yesterday
 if os.path.exists(filepathY): 
     f2=pd.read_csv(filepathY+'/StateDapps.csv')
-    f2.columns=['dappNAme', 'category', 'users', 'Platform', 'Devact', 'Volume7d','github', 'status', 'Date', 'license']
+    f2.columns=['dappNAme', 'category', 'users', 'Platform', 'Devact', 'Volume7d','dappLink','Txn24','Txn7d','github', 'chat','facebook','blog','twitter','reddit','status', 'Date', 'license']
     xf1=f2[~f2.dappNAme.isin(result.dappNAme)]
     xf2=result[~result.dappNAme.isin(f2.dappNAme)]
     if xf1.dappNAme.count() > 0:
