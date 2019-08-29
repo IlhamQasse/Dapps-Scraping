@@ -242,7 +242,7 @@ yesterday=yesterday.strftime('%Y-%m-%d')
 filepathY='dappRadar-'+yesterday
 if os.path.exists(filepathY): 
     f2=pd.read_csv(filepathY+'/DappRadar.csv')
-    f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github', 'smartContract']
+    f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract']
 
     xf1=f2[~f2.Name.isin(result.Name)]
     xf2=result[~result.Name.isin(f2.Name)]
