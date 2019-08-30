@@ -1,6 +1,8 @@
 # DApps-Scraping
-This project scrapes the DApps websites and repositories such as the state of DApps and Dappradar. Moreover, it also can be used to run other website scraper projects from parsehub. You only need to change the app-key to access your projects in parsehub. 
 
+The main objective of this project is to study and analyze the quality of the decentralised applications available in some public repositories. This project scrapes the DApps websites and repositories such as the state of DApps and Dappradar
+
+The extracted datasets are available in Zenodo : https://zenodo.org/record/3382127. 
 
 
 ## Installation
