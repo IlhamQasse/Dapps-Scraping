@@ -32,6 +32,8 @@ brew install wget
 Once the driver is downloaded, please check the path of the chrome driver to both scripts (DappRadar.py, stateDapps.py).
 if you have downloaded the chrome driver manually, please change the path specified in the codes to your own path. You don't have to change the path if you have used the script to download your driver.
 
+Note: Google Chrome must also be present in the corresponding version. See the text file downloadchrome.doc for details.
+
 
 ## Usage
 

@@ -1,10 +1,13 @@
 uname -a | grep -q Linux
 
+#version=76.0.3809.68
+version=77.0.3865.40
+
 if [ $? = 0 ]
 then
-  src=https://chromedriver.storage.googleapis.com/76.0.3809.68/chromedriver_linux64.zip
+  src=https://chromedriver.storage.googleapis.com/$version/chromedriver_linux64.zip
 else
-  src=https://chromedriver.storage.googleapis.com/76.0.3809.68/chromedriver_mac64.zip
+  src=https://chromedriver.storage.googleapis.com/$version/chromedriver_mac64.zip
 fi
 
 if [ ! -x chromedriver ]

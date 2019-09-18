@@ -31,7 +31,13 @@ def is_element_present(driver, what):
 #Start chrome driver and load the page
 driverPath=os.path.dirname(os.path.abspath(__file__))
 #please make sure that you have installed the driver and its in the same file as the python code, otherwise change the specified path 
-driver = webdriver.Chrome(driverPath+'/chromedriver') 
+### Headless
+options = webdriver.ChromeOptions()
+options.binary_location = '/opt/google/chrome/google-chrome'
+options.add_argument('headless')
+options.add_argument('window-size=1200x900')
+###
+driver = webdriver.Chrome(driverPath+'/chromedriver', chrome_options=options) 
 driver.get('https://dappradar.com/rankings')
 actions = ActionChains(driver)
 #Access the source page of the loaded page and extrct the required data based on the xpath
@@ -141,7 +147,8 @@ os.mkdir(filename)
 
 # A general describe of the extracted data
 
-result.describe(include=['object'])
+# TODO ERROR -- TypeError: unhashable type: 'list'
+#result.describe(include=['object'])
 
 # number of DApps in each platform
 fig1 = plt.figure(1)
