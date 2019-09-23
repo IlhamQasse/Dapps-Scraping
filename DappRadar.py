@@ -143,12 +143,13 @@ month=today.strftime("%m")
 day=today.strftime("%d")
 x=os.path.dirname(os.path.abspath(__file__))
 filename = x+"/dappRadar-"  + year +"-" + month + "-" + day
-os.mkdir(filename)
+os.makedirs(filename, exist_ok=True)
 
 # A general describe of the extracted data
 
 # TODO ERROR -- TypeError: unhashable type: 'list'
 #result.describe(include=['object'])
+print(result) # alternative to the above
 
 # number of DApps in each platform
 fig1 = plt.figure(1)
