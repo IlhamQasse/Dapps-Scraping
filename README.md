@@ -33,19 +33,19 @@ Once the driver is downloaded, please check the path of the chrome driver to bot
 if you have downloaded the chrome driver manually, please change the path specified in the codes to your own path. You don't have to change the path if you have used the script to download your driver.
 
 Note: Google Chrome must also be present in the corresponding version. See the text file downloadchrome.doc for details.
-
+Use Chrome for debugging as well - in case the web pages change structure, type Ctrl+Shift+I and use the pointer tool with Ctrl+Shift+C to find out the new XPath expressions.
 
 ## Usage
 
 To scrape the required websites we have used the package Selenium.
 We have created three scripts:
 
-1. the first script is to crawl the DappRadar webpage. To run the script use the following comand:
+1. The first script is to crawl the DappRadar webpage. To run the script use the following command:
 
 ```bash
 python DappRadar.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawls only three pages.
 
 ```bash
 python DappRadar.py 3 
@@ -56,7 +56,7 @@ python DappRadar.py 3
 ```bash
 python stateDapps.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawls only three pages.
 ```bash
 python stateDapps.py 3
 ```
@@ -66,7 +66,7 @@ python stateDapps.py 3
 ```bash
 python dappcom.py
 ```
-For testing purposes you can specify the number of pages you want to scrape. The command below crawles only three pages.  
+For testing purposes you can specify the number of pages you want to scrape. The command below crawls only three pages.
 ```bash
 python dappcom.py 3
 ```
@@ -74,5 +74,5 @@ The scraping time depends on the number of the pages, and it may take 1 to 2 hou
 Once the extraction are done, the scripts will generate plots from the extracted data and automatically save them in a folder with the website name and date of the run.
 
 ## Disclaimer
-Be aware that web scraping is considered a bad practice. Please be advised that this was created for research and education purposes only.  
-
+Be aware that web scraping is considered a bad practice. Please be advised that this was created for research and education purposes only.
+Ask us to share our crawling data rather than crawling on your own without strong reason.

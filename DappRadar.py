@@ -21,6 +21,22 @@ import os
 import os.path
 from datetime import date, timedelta
 import sys
+import math
+
+pd.set_option('display.width', 150)
+pd.set_option('display.max_rows', 199)
+
+today = datetime.datetime.now()
+year = today.strftime("%Y")
+month = today.strftime("%m")
+day = today.strftime("%d")
+x = os.path.dirname(os.path.abspath(__file__))
+filename = x + "/dappRadar-"  + year + "-" + month + "-" + day
+
+if os.path.isdir(filename):
+  print("Crawl error: Directory exists", filename)
+  exit(1)
+
 #Below function check if a certin element is in the page or not (it used for social media links)
 def is_element_present(driver, what):
     try:
@@ -28,127 +44,149 @@ def is_element_present(driver, what):
     except NoSuchElementException as e:
         return False
     return True
+
+waittime = 4
+browserpath = "/opt/google/chrome/google-chrome"
+
+print("Crawl date:", datetime.datetime.now().isoformat())
+print("Crawl executable:", browserpath)
 #Start chrome driver and load the page
-driverPath=os.path.dirname(os.path.abspath(__file__))
+driverPath = os.path.dirname(os.path.abspath(__file__))
 #please make sure that you have installed the driver and its in the same file as the python code, otherwise change the specified path 
 ### Headless
 options = webdriver.ChromeOptions()
-options.binary_location = '/opt/google/chrome/google-chrome'
+options.binary_location = browserpath
 options.add_argument('headless')
 options.add_argument('window-size=1200x900')
 ###
-driver = webdriver.Chrome(driverPath+'/chromedriver', chrome_options=options) 
-driver.get('https://dappradar.com/rankings')
+driver = webdriver.Chrome(driverPath + '/chromedriver', chrome_options=options) 
+
+dappsite = 'https://dappradar.com/rankings'
+print("Crawl site:", dappsite)
+driver.get(dappsite)
 actions = ActionChains(driver)
 #Access the source page of the loaded page and extrct the required data based on the xpath
 tree = html.fromstring(driver.page_source)
-currenturl=driver.current_url
+#currenturl = driver.current_url
 if len(sys.argv) < 2:
     print("No Arguments :)")
-    pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()')
-    pagen=int(pnumber[0])
+    #pnumber=tree.xpath('//ul[@class="pagination-list"]/li[last()]/a/text()') # FIXME: This returns an empty list; it works with the expression below
+    #pagen=int(pnumber[0])
+    pagen = int(tree.xpath('//ul[@class="pagination-list"]/li[last()]')[0].text_content())
 else:
-    pagen=int(sys.argv[1])
+    pagen = float(sys.argv[1])
     if pagen < 0:
-        pagen=0
-links = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
-Name=['r']
-Volume24=['r']
+        pagen = 0
 
-Name.extend(tree.xpath('.//div[@class="table-dapp-name"]/text()'))
-Category= tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
-Balance= tree.xpath('.//div[@data-heading="Balance"]/div/span[2]/text()')
-User= tree.xpath('.//div[@data-heading="Users 24h"]/span/text()')
-Volume24.extend(tree.xpath('.//div[@data-heading="Volume 24h"]/div/div/div[1]/text()'))
-Volume7d= tree.xpath('.//div[@data-heading="Volume 7d"]/div/div[1]/text()')
-Txn24= tree.xpath('.//div[@data-heading="Txs 24h"]/div/span/text()')
-Txn7d= tree.xpath('.//div[@data-heading="Txs 7d"]/div/span/text()')
-protocol=driver.find_elements_by_xpath(".//div[@data-heading='Protocol']/div")
-platform=[]
-for x in protocol :
-    platform.append(x.text)
-df = pd.DataFrame(list(zip(Name,Category,Balance,User,Volume24,Volume7d,Txn24,Txn7d,platform)), columns =['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform'])
+print("Crawl pages:", pagen)
+links = []
+
+# FIXME: missing columns due to web page changes; requires one more click to find out?
+#Volume7d= tree.xpath('.//div[@data-heading="Volume 7d"]/div/div[1]/text()')
+#Txn7d= tree.xpath('.//div[@data-heading="Txs 7d"]/div/span/text()')
 
 #Access each Dapp and extract more data
-for x in range(pagen-1):
-  nextp=driver.find_element_by_xpath("//a[@class='pagination-next']").click()
-  element_present = EC.presence_of_element_located((By.XPATH, '//a[@class="pagination-next"]'))
-  WebDriverWait(driver, 5).until(element_present)
-  tree = html.fromstring(driver.page_source)
-  Name=['r']
-  Volume24=['r']
+for x in range(-1, math.ceil(pagen) - 1):
+  if x != -1:
+    nextpath = "//button[@class='pagination-next']"
+    #nextpathvisible = nextpath
+    nextpathvisible = "//div[@data-heading='ID']/text()=" + str((x + 1) * 50 + 1)
+    print("nextpage:", nextpathvisible)
+    nextp = driver.find_element_by_xpath(nextpath).click()
+    element_present = EC.presence_of_element_located((By.XPATH, nextpathvisible))
+    try:
+      WebDriverWait(driver, waittime).until(element_present)
+    except:
+      tree = html.fromstring(driver.page_source)
+      if tree.xpath(nextpathvisible):
+        print("nextpage: assume page load succeeded")
+      else:
+        exit(1)
+    else:
+      tree = html.fromstring(driver.page_source)
+
+  Name = tree.xpath('.//div[@class="column-flex column-name featured-dapp-name"]/@title')
   Name.extend(tree.xpath('.//div[@class="table-dapp-name"]/text()'))
-  Category= tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
-  Balance= tree.xpath('.//div[@data-heading="Balance"]/div/span[2]/text()')
-  User= tree.xpath('.//div[@data-heading="Users 24h"]/span/text()')
-  Volume24.extend(tree.xpath('.//div[@data-heading="Volume 24h"]/div/div/div[1]/text()'))
-  Volume7d= tree.xpath('.//div[@data-heading="Volume 7d"]/div/div[1]/text()')
-  Txn24= tree.xpath('.//div[@data-heading="Txs 24h"]/div/span/text()')
-  Txn7d= tree.xpath('.//div[@data-heading="Txs 7d"]/div/span/text()')
-  platform=[]
-  protocol=driver.find_elements_by_xpath(".//div[@data-heading='Protocol']/div")
-  for x in protocol :
-    platform.append(x.text)
+  Category = tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
+  Balance = tree.xpath('.//div[@data-heading="Balance"]/div/span[2]/text()')
+  User = tree.xpath('.//div[@data-heading="Users 24h"]/span/text()')
+  Volume24 = tree.xpath('.//div[@data-heading="Volume 24h"]/div[1]/text()')
+  Txn24 = tree.xpath('.//div[@data-heading="Txs 24h"]/span/text()')
+
+  platform = [x.split(" ")[1] for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
+
   dapplinks = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
   links.extend(dapplinks)
-  df = df.append(pd.DataFrame(list(zip(Name,Category,Balance,User,Volume24,Volume7d,Txn24,Txn7d,platform)), columns=df.columns))
 
-eachdapp= pd.DataFrame(columns=['github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract'])
-for link in links:
+  dfpage = pd.DataFrame(list(zip(Name,Category,Balance,User,Volume24,Txn24,platform)), columns=['Name', 'category', 'Balance', 'User', 'Volume24', 'Txn24', 'platform'])
+  print("Crawl DApps Index Length:", len(dfpage), "at index", x)
+
+  if x == -1:
+    df = pd.DataFrame()
+  df = df.append(dfpage[1:])
+
+dapplimit = int(50 * pagen / math.ceil(pagen))
+df = df[:dapplimit]
+df.reset_index(inplace=True, drop=True)
+print("Crawl DApps:", dapplimit)
+#print("DApps:", df)
+
+eachdapp = pd.DataFrame(columns=['github', 'facebook', 'twitter', 'telegram', 'medium', 'youtube', 'reddit', 'dappLink', 'smartContract'])
+for link in links[:dapplimit]:
     driver.get(link)
     tree = html.fromstring(driver.page_source)
     if is_element_present(driver, '//div[@data-original-title="GitHub"]'):
-       Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')
+        Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')[0]
     else:
         Github = 'null'
     if is_element_present(driver, '//div[@data-original-title="facebook"]'):
-       facebook = tree.xpath('//div[@data-original-title="facebook"]/a/@href')
+        facebook = tree.xpath('//div[@data-original-title="facebook"]/a/@href')[0]
     else:
         facebook = 'null'
     if is_element_present(driver, '//div[@data-original-title="twitter"]'):
-       twitter = tree.xpath('//div[@data-original-title="twitter"]/a/@href')
+        twitter = tree.xpath('//div[@data-original-title="twitter"]/a/@href')[0]
     else:
         twitter = 'null'   
     if is_element_present(driver, '//div[@data-original-title="telegram"]'):
-       telegram = tree.xpath('//div[@data-original-title="telegram"]/a/@href')
+        telegram = tree.xpath('//div[@data-original-title="telegram"]/a/@href')[0]
     else:
         telegram = 'null'  
     if is_element_present(driver, '//div[@data-original-title="medium"]'):
-       medium = tree.xpath('//div[@data-original-title="medium"]/a/@href')
+        medium = tree.xpath('//div[@data-original-title="medium"]/a/@href')[0]
     else:
         medium = 'null'   
     if is_element_present(driver, '//div[@data-original-title="reddit"]'):
-       reddit = tree.xpath('//div[@data-original-title="reddit"]/a/@href')
+        reddit = tree.xpath('//div[@data-original-title="reddit"]/a/@href')[0]
     else:
         reddit = 'null'  
     if is_element_present(driver, '//div[@data-original-title="youtube"]'):
-       youtube = tree.xpath('//div[@data-original-title="youtube"]/a/@href')
+        youtube = tree.xpath('//div[@data-original-title="youtube"]/a/@href')[0]
     else:
         youtube = 'null' 
-    dappLink=tree.xpath('//div[@class="dapp-links"]/a/@href')      
-    smartContract=tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')
-    eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
-df=df.drop(df.index[0])
-df.reset_index(inplace=True, drop=True)
+    try:
+        dappLink = tree.xpath('//div[@class="dapp-links"]/a/@href')[0]
+        smartContract = tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')[0]
+        eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
+    except:
+        print("Bailout:", link)
+
 eachdapp.reset_index(inplace=True, drop=True)
 result = pd.concat([df, eachdapp], axis=1)
+#print("DApps+Social:", result)
+
 #Close and quit the chrome driver
 driver.quit()
 
 #Create folder to save figures and extracted data
 
-today = datetime.datetime.now()
-year = today.strftime("%Y")
-month=today.strftime("%m")
-day=today.strftime("%d")
-x=os.path.dirname(os.path.abspath(__file__))
-filename = x+"/dappRadar-"  + year +"-" + month + "-" + day
 os.mkdir(filename)
 
 # A general describe of the extracted data
 
 # TODO ERROR -- TypeError: unhashable type: 'list'
 #result.describe(include=['object'])
+
+print("Plotting...")
 
 # number of DApps in each platform
 fig1 = plt.figure(1)
@@ -195,6 +233,7 @@ fig5.savefig(filename+'/dappsVolume24.png',dpi=1000)
 plt.close(fig5)
 
 #Weekly volume for each blockchain platform
+"""
 fig6 = plt.figure(6)
 result.Volume7d = (result.Volume7d.replace(r'[kMB]+$', '', regex=True).astype(float) * result.Volume7d.str.extract(r'[\d\.]+([kMB]+)', expand=False).fillna(1).replace(['k','M', 'B'], [10**3, 10**6, 10**9]).astype(int))
 df4=result.groupby('platform', as_index=False)['Volume7d'].sum()
@@ -203,6 +242,7 @@ fig6 = plot.get_figure()
 fig6.tight_layout()
 fig6.savefig(filename+'/dappsVolume7d.png',dpi=1000)
 plt.close(fig6)
+"""
 
 #Daily Txns for each blockchain platform
 fig7 = plt.figure(7)
@@ -215,6 +255,7 @@ fig7.savefig(filename+'/dappsTxn24.png',dpi=1000)
 plt.close(fig7)
 
 #Weekly Txns for each blockchain platform
+"""
 fig8 = plt.figure(8)
 result.Txn7d = (result.Txn7d.replace(r'[kMB]+$', '', regex=True).astype(float) * result.Txn7d.str.extract(r'[\d\.]+([kMB]+)', expand=False).fillna(1).replace(['k','M', 'B'], [10**3, 10**6, 10**9]).astype(int))
 df6=result.groupby('platform', as_index=False)['Txn7d'].sum()
@@ -223,6 +264,7 @@ fig8 = plot.get_figure()
 fig8.tight_layout()
 fig8.savefig(filename+'/dappsTxn7d.png',dpi=1000)
 plt.close(fig8)
+"""
 
 #Convert smart contracts column to integer 
 result['smartContract'] = result['smartContract'].astype(str)
@@ -249,7 +291,8 @@ yesterday=yesterday.strftime('%Y-%m-%d')
 filepathY='dappRadar-'+yesterday
 if os.path.exists(filepathY): 
     f2=pd.read_csv(filepathY+'/DappRadar.csv')
-    f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract']
+    #f2.columns=['Name','category','Balance','User','Volume24','Volume7d','Txn24','Txn7d','platform', 'github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract']
+    f2.columns=['Name','category','Balance','User','Volume24','Txn24','platform', 'github' ,'facebook','twitter','telegram','medium','youtube','reddit','dappLink', 'smartContract']
 
     xf1=f2[~f2.Name.isin(result.Name)]
     xf2=result[~result.Name.isin(f2.Name)]
