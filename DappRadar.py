@@ -166,9 +166,11 @@ for link in links[:dapplimit]:
     try:
         dappLink = tree.xpath('//div[@class="dapp-links"]/a/@href')[0]
         smartContract = tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')[0]
-        eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
     except:
         print("Bailout:", link)
+        dappLink = ''
+        smartContract = ''
+    eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
 
 eachdapp.reset_index(inplace=True, drop=True)
 result = pd.concat([df, eachdapp], axis=1)
@@ -310,3 +312,5 @@ if os.path.exists(filepathY):
         print("\n \033[1m There is no removed DApps\033[0m \n")
 else :
     print("There is no file to compare with")
+
+print("Finished:", datetime.datetime.now().isoformat())
