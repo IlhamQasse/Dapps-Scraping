@@ -121,8 +121,10 @@ for x in range(-1, math.ceil(pagen) - 1):
   #platform = [x.split(" ")[1] for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
   platform = [x for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
 
-  dapplinks = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
-  links.extend(dapplinks)
+  # CHANGE 05.11.2019
+  #dapplinks = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
+  dapplinks = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//a[@class='rankings-row']")]
+  links.extend(dapplinks[1:])
 
   if len(Name) != len(Category) or len(Category) != len(Balance) or len(Balance) != len(User) or len(User) != len(Volume24) or len(Volume24) != len(Txn24) or len(Txn24) != len(platform):
     print("Crawl ERROR: lengths", len(Name), len(Category), len(Balance), len(User), len(Volume24), len(Txn24), len(platform))
@@ -144,6 +146,7 @@ print("Crawl DApps:", dapplimit)
 eachdapp = pd.DataFrame(columns=['github', 'facebook', 'twitter', 'telegram', 'medium', 'youtube', 'reddit', 'dappLink', 'smartContract'])
 for link in links[:dapplimit]:
     driver.get(link)
+    WebDriverWait(driver, 1)
     tree = html.fromstring(driver.page_source)
     if is_element_present(driver, '//div[@data-original-title="GitHub"]'):
         Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')[0]
@@ -174,8 +177,11 @@ for link in links[:dapplimit]:
     else:
         youtube = 'null' 
     try:
-        dappLink = tree.xpath('//div[@class="dapp-links"]/a/@href')[0]
-        smartContract = tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')[0]
+        # CHANGE 05.11.2019
+        #dappLink = tree.xpath('//div[@class="dapp-links"]/a/@href')[0]
+        #smartContract = tree.xpath('//div[@class="card card-contracts"]/header/p/span/text()')[0]
+        dappLink = tree.xpath('//a[@class="button is-primary article-page__cta"]/@href')[0]
+        smartContract = tree.xpath('//span[@class="tag"]/text()')[0]
     except:
         print("Bailout:", link)
         dappLink = ''
