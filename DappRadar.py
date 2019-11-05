@@ -34,7 +34,7 @@ x = os.path.dirname(os.path.abspath(__file__))
 filename = x + "/dappRadar-"  + year + "-" + month + "-" + day
 
 if os.path.isdir(filename):
-  print("Crawl error: Directory exists", filename)
+  print("Crawl ERROR: Directory exists", filename)
   exit(1)
 
 #Below function check if a certin element is in the page or not (it used for social media links)
@@ -105,18 +105,28 @@ for x in range(-1, math.ceil(pagen) - 1):
     else:
       tree = html.fromstring(driver.page_source)
 
-  Name = tree.xpath('.//div[@class="column-flex column-name featured-dapp-name"]/@title')
-  Name.extend(tree.xpath('.//div[@class="table-dapp-name"]/text()'))
-  Category = tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
+  # CHANGE 05.11.2019
+  #Name = tree.xpath('.//div[@class="column-flex column-name featured-dapp-name"]/@title')
+  #Name.extend(tree.xpath('.//div[@class="table-dapp-name"]/text()'))
+  #Category = tree.xpath('.//div[@class="column-flex column-category"]/a/span/text()')
+  Name = []
+  Name.extend(tree.xpath('.//span[@class="rankings-column__name--title"]/text()'))
+  Category = tree.xpath('.//div[@class="rankings-column rankings-column__category"]/text()')
   Balance = tree.xpath('.//div[@data-heading="Balance"]/div/span[2]/text()')
   User = tree.xpath('.//div[@data-heading="Users 24h"]/span/text()')
   Volume24 = tree.xpath('.//div[@data-heading="Volume 24h"]/div[1]/text()')
   Txn24 = tree.xpath('.//div[@data-heading="Txs 24h"]/span/text()')
 
-  platform = [x.split(" ")[1] for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
+  # CHANGE 05.11.2019
+  #platform = [x.split(" ")[1] for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
+  platform = [x for x in tree.xpath(".//div[@data-heading='Protocol']/text()")]
 
   dapplinks = [link.get_attribute('href') for link in driver.find_elements_by_xpath("//div[@class='column-flex column-name']/a")]
   links.extend(dapplinks)
+
+  if len(Name) != len(Category) or len(Category) != len(Balance) or len(Balance) != len(User) or len(User) != len(Volume24) or len(Volume24) != len(Txn24) or len(Txn24) != len(platform):
+    print("Crawl ERROR: lengths", len(Name), len(Category), len(Balance), len(User), len(Volume24), len(Txn24), len(platform))
+    exit(1)
 
   dfpage = pd.DataFrame(list(zip(Name,Category,Balance,User,Volume24,Txn24,platform)), columns=['Name', 'category', 'Balance', 'User', 'Volume24', 'Txn24', 'platform'])
   print("Crawl DApps Index Length:", len(dfpage), "at index", x)
@@ -284,7 +294,8 @@ fig9.savefig(filename+'/smartcontracts.png',dpi=1000)
 plt.close(fig9)
 
 #save the dataframe to excel file
-result.to_excel(filename+'/DappRadar.xlsx', index=False)
+#result.to_excel(filename+'/DappRadar.xlsx', index=False)
+result.to_csv(filename+'/DappRadar.csv', index=False)
 
 #compare the file with the previous file
 today = date.today()
