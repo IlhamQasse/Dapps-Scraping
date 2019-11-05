@@ -145,37 +145,48 @@ print("Crawl DApps:", dapplimit)
 
 eachdapp = pd.DataFrame(columns=['github', 'facebook', 'twitter', 'telegram', 'medium', 'youtube', 'reddit', 'dappLink', 'smartContract'])
 for link in links[:dapplimit]:
+    print("DApp", link)
     driver.get(link)
-    WebDriverWait(driver, 1)
+    #WebDriverWait(driver, 1)
     tree = html.fromstring(driver.page_source)
-    if is_element_present(driver, '//div[@data-original-title="GitHub"]'):
-        Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')[0]
-    else:
+    try:
+        if is_element_present(driver, '//div[@data-original-title="GitHub"]'):
+            Github = tree.xpath('//div[@data-original-title="GitHub"]/a/@href')[0]
+        else:
+            Github = 'null'
+        if is_element_present(driver, '//div[@data-original-title="facebook"]'):
+            facebook = tree.xpath('//div[@data-original-title="facebook"]/a/@href')[0]
+        else:
+            facebook = 'null'
+        if is_element_present(driver, '//div[@data-original-title="twitter"]'):
+            twitter = tree.xpath('//div[@data-original-title="twitter"]/a/@href')[0]
+        else:
+            twitter = 'null'   
+        if is_element_present(driver, '//div[@data-original-title="telegram"]'):
+            telegram = tree.xpath('//div[@data-original-title="telegram"]/a/@href')[0]
+        else:
+            telegram = 'null'  
+        if is_element_present(driver, '//div[@data-original-title="medium"]'):
+            medium = tree.xpath('//div[@data-original-title="medium"]/a/@href')[0]
+        else:
+            medium = 'null'   
+        if is_element_present(driver, '//div[@data-original-title="reddit"]'):
+            reddit = tree.xpath('//div[@data-original-title="reddit"]/a/@href')[0]
+        else:
+            reddit = 'null'  
+        if is_element_present(driver, '//div[@data-original-title="youtube"]'):
+            youtube = tree.xpath('//div[@data-original-title="youtube"]/a/@href')[0]
+        else:
+            youtube = 'null' 
+    except:
+        print("Bailout social:", link)
         Github = 'null'
-    if is_element_present(driver, '//div[@data-original-title="facebook"]'):
-        facebook = tree.xpath('//div[@data-original-title="facebook"]/a/@href')[0]
-    else:
         facebook = 'null'
-    if is_element_present(driver, '//div[@data-original-title="twitter"]'):
-        twitter = tree.xpath('//div[@data-original-title="twitter"]/a/@href')[0]
-    else:
-        twitter = 'null'   
-    if is_element_present(driver, '//div[@data-original-title="telegram"]'):
-        telegram = tree.xpath('//div[@data-original-title="telegram"]/a/@href')[0]
-    else:
-        telegram = 'null'  
-    if is_element_present(driver, '//div[@data-original-title="medium"]'):
-        medium = tree.xpath('//div[@data-original-title="medium"]/a/@href')[0]
-    else:
-        medium = 'null'   
-    if is_element_present(driver, '//div[@data-original-title="reddit"]'):
-        reddit = tree.xpath('//div[@data-original-title="reddit"]/a/@href')[0]
-    else:
-        reddit = 'null'  
-    if is_element_present(driver, '//div[@data-original-title="youtube"]'):
-        youtube = tree.xpath('//div[@data-original-title="youtube"]/a/@href')[0]
-    else:
-        youtube = 'null' 
+        twitter = 'null'
+        telegram = 'null'
+        medium = 'null'
+        reddit = 'null'
+        youtube = 'null'
     try:
         # CHANGE 05.11.2019
         #dappLink = tree.xpath('//div[@class="dapp-links"]/a/@href')[0]
@@ -183,7 +194,7 @@ for link in links[:dapplimit]:
         dappLink = tree.xpath('//a[@class="button is-primary article-page__cta"]/@href')[0]
         smartContract = tree.xpath('//span[@class="tag"]/text()')[0]
     except:
-        print("Bailout:", link)
+        print("Bailout smart contracts:", link)
         dappLink = ''
         smartContract = ''
     eachdapp = eachdapp.append(pd.DataFrame([[Github,facebook,twitter,telegram,medium,youtube,reddit,dappLink,smartContract]], columns=eachdapp.columns))
